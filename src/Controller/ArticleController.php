@@ -17,7 +17,7 @@ class ArticleController extends AbstractController
      */
     public function index(): Response
     {
-        
+        //testKhalil
         return $this->render('article/index.html.twig', [
             'controller_name' => 'ArticleController',
         ]);
