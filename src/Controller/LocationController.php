@@ -18,6 +18,7 @@ class LocationController extends AbstractController
      */
     public function index(): Response
     {
+        // test2
         return $this->render('location/index.html.twig', [
             'controller_name' => 'LocationController',
         ]);
