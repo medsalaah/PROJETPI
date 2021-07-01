@@ -17,7 +17,7 @@ class ArticleController extends AbstractController
      */
     public function index(): Response
     {
-        //testKhalil
+
         return $this->render('article/index.html.twig', [
             'controller_name' => 'ArticleController',
         ]);
@@ -72,7 +72,7 @@ class ArticleController extends AbstractController
     public function getarticles(SerializerInterface $seralizer): Response
     {
         $list = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        $jsonContent = $seralizer->serialize($list, "json");
+        $jsonContent = $seralizer->serialize($list, "json", ['groups'=>'article:read']);
         return new Response($jsonContent);
     }
      /**
