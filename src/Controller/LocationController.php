@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Location;
 use App\Repository\LocationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -38,21 +41,30 @@ class LocationController extends AbstractController
         return new Response($jsonContent);
     }
       /**
-     * @Route("/api/updlocation/{id}", name="aupdlocation")
+     * @Route("/api/updlocation/{id}", name="aupdlocation_put", methods={"PUT"})
      */
-    public function updlocation($id, Request $request, SerializerInterface $serializer, LocationRepository $repo): Response
+    public function putlocation(
+        Location $location,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $location1 = $repo->find($id);
-        $data = $request->getContent();
-        $location = $serializer->deserialize($data, Location::class, "json");
-        $location1 = $location;
-        dump($location);
-        #$em = $this->getDoctrine()->getManager();
-        #$em->persist($location1);
-        #$em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $serializer->serialize($location1, "json");
-        return new Response($jsonContent);
+        $serializer->deserialize(
+            $request->getContent(),
+            Location::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $location]
+        );
+
+        $em->flush();
+
+        return new JsonResponse(
+            $serializer->serialize($location, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }    
      /**
      * @Route("/api/deletlocation/{id}", name="deletlocation")
