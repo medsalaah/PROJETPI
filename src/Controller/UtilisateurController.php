@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Repository\UtilisateurRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class UtilisateurController extends AbstractController
@@ -36,21 +39,32 @@ class UtilisateurController extends AbstractController
         $jsonContent = $seralizer->serialize($utilisateur, "json");
         return new Response($jsonContent);
     }
-     /**
-     * @Route("/api/updutilisateur/{id}", name="aupdutilisateur")
+      /**
+     * @Route("/api/updutilisateur/{id}", name="aupdutilisateur_put", methods={"PUT"})
      */
-    public function updutilisateur($id, Request $request, SerializerInterface $seralizer, UtilisateurRepository $repo): Response
+    public function pututilisateur(
+        Utilisateur $utilisateur,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $utilisateur = $repo->find($id);
-        $data = $request->getContent();
-        $utilisateur = $seralizer->deserialize($data, Utilisateur::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
+        $serializer->deserialize(
+            $request->getContent(),
+            Utilisateur::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $utilisateur]
+        );
+
         $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($utilisateur, "json");
-        return new Response($jsonContent);
-    }    
+
+        return new JsonResponse(
+            $serializer->serialize($utilisateur, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
+    }     
      /**
      * @Route("/api/deletutilisateur/{id}", name="deletutilisateur")
      */
@@ -66,7 +80,7 @@ class UtilisateurController extends AbstractController
         return new Response($jsonContent);
     }   
      /**
-     * @Route("/api/listeutilisateur", name="listeutilisateur")
+     * @Route("/api/listeutilisateurs", name="listeutilisateurs")
      */
     public function getutilisateurs(SerializerInterface $seralizer): Response
     {

@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ArticleController extends AbstractController
@@ -17,7 +20,7 @@ class ArticleController extends AbstractController
      */
     public function index(): Response
     {
-        
+
         return $this->render('article/index.html.twig', [
             'controller_name' => 'ArticleController',
         ]);
@@ -37,20 +40,31 @@ class ArticleController extends AbstractController
         $jsonContent = $seralizer->serialize($article, "json");
         return new Response($jsonContent);
     }
-     /**
-     * @Route("/api/updarticle/{id}", name="aupdarticle")
+      /**
+     * @Route("/api/updarticle/{id}", name="updarticle_put", methods={"PUT"})
      */
-    public function updarticle($id, Request $request, SerializerInterface $seralizer, ArticleRepository $repo): Response
+    public function updarticle(
+        Article $article,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $article = $repo->find($id);
-        $data = $request->getContent();
-        $article = $seralizer->deserialize($data, Materiels::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
+        $serializer->deserialize(
+            $request->getContent(),
+            Article::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $article]
+        );
+
         $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($article, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($article, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }    
      /**
      * @Route("/api/deletarticle/{id}", name="deletarticle")
@@ -72,7 +86,7 @@ class ArticleController extends AbstractController
     public function getarticles(SerializerInterface $seralizer): Response
     {
         $list = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        $jsonContent = $seralizer->serialize($list, "json");
+        $jsonContent = $seralizer->serialize($list, "json", ['groups'=>'article:read']);
         return new Response($jsonContent);
     }
      /**

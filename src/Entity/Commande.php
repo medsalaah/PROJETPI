@@ -43,20 +43,20 @@ class Commande
      * @ORM\Column(type="string", length=255)
      */
     private $mode_paiement;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Materiels::class, inversedBy="commandes")
-     */
-    private $titre_Mat;
-
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="date")
      */
     private $utilisateur;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Lignecommande::class, mappedBy="commande")
+     */
+    private $id_commande;
+
     public function __construct()
     {
         $this->titre_Mat = new ArrayCollection();
+        $this->id_commande = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,30 +124,6 @@ class Commande
         return $this;
     }
 
-    /**
-     * @return Collection|Materiels[]
-     */
-    public function getTitreMat(): Collection
-    {
-        return $this->titre_Mat;
-    }
-
-    public function addTitreMat(Materiels $titreMat): self
-    {
-        if (!$this->titre_Mat->contains($titreMat)) {
-            $this->titre_Mat[] = $titreMat;
-        }
-
-        return $this;
-    }
-
-    public function removeTitreMat(Materiels $titreMat): self
-    {
-        $this->titre_Mat->removeElement($titreMat);
-
-        return $this;
-    }
-
     public function getUtilisateur(): ?Utilisateur
     {
         return $this->utilisateur;
@@ -159,4 +135,35 @@ class Commande
 
         return $this;
     }
+
+    /**
+     * @return Collection|Lignecommande[]
+     */
+    public function getIdCommande(): Collection
+    {
+        return $this->id_commande;
+    }
+
+    public function addIdCommande(Lignecommande $idCommande): self
+    {
+        if (!$this->id_commande->contains($idCommande)) {
+            $this->id_commande[] = $idCommande;
+            $idCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdCommande(Lignecommande $idCommande): self
+    {
+        if ($this->id_commande->removeElement($idCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($idCommande->getCommande() === $this) {
+                $idCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

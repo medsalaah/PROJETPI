@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class Location
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="prix_loc")
      */
     private $utilisateur;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Lignelocation::class, mappedBy="location")
+     */
+    private $id_loc;
+
+    public function __construct()
+    {
+        $this->id_loc = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class Location
     public function setUtilisateur(?Utilisateur $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Lignelocation[]
+     */
+    public function getIdLoc(): Collection
+    {
+        return $this->id_loc;
+    }
+
+    public function addIdLoc(Lignelocation $idLoc): self
+    {
+        if (!$this->id_loc->contains($idLoc)) {
+            $this->id_loc[] = $idLoc;
+            $idLoc->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdLoc(Lignelocation $idLoc): self
+    {
+        if ($this->id_loc->removeElement($idLoc)) {
+            // set the owning side to null (unless already changed)
+            if ($idLoc->getLocation() === $this) {
+                $idLoc->setLocation(null);
+            }
+        }
 
         return $this;
     }

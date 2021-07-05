@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -14,31 +15,37 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("article:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("article:read")
      */
     private $titre_art;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("article:read")
      */
     private $date_pub_art;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("article:read")
      */
     private $date_update;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("article:read")
      */
     private $continu;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("article:read")
      */
     private $image;
 

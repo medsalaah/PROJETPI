@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Organisateur;
 use App\Repository\OrganisateurRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class OrganisateurController extends AbstractController
@@ -36,21 +39,32 @@ class OrganisateurController extends AbstractController
         $jsonContent = $seralizer->serialize($organisateur, "json");
         return new Response($jsonContent);
     }
-     /**
-     * @Route("/api/updorganisateur/{id}", name="aupdorganisateur")
+      /**
+     * @Route("/api/updorganisateur/{id}", name="aupdorganisateur_put", methods={"PUT"})
      */
-    public function updorganisateur($id, Request $request, SerializerInterface $seralizer, OrganisateurRepository $repo): Response
+    public function putorganisateur(
+        Organisateur $organisateur,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $organisateur = $repo->find($id);
-        $data = $request->getContent();
-        $organisateur = $seralizer->deserialize($data, Organisateu::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
+        $serializer->deserialize(
+            $request->getContent(),
+            Organisateur::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $organisateur]
+        );
+
         $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($organisateur, "json");
-        return new Response($jsonContent);
-    }    
+
+        return new JsonResponse(
+            $serializer->serialize($organisateur, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
+    }   
      /**
      * @Route("/api/deletorganisateur/{id}", name="deletorganisateur")
      */
