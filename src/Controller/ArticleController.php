@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+
+
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ArticleController extends AbstractController
@@ -22,36 +27,43 @@ class ArticleController extends AbstractController
             'controller_name' => 'ArticleController',
         ]);
     }
-     /**
-     * @Route("/api/addarticle", name="addarticle")
+    /**
+     * @Route("/api/addarticle", name="article_add")
      */
-    public function addarticle(Request $request ,SerializerInterface $seralizer): Response
+    public function addArticle (Request $request, SerializerInterface $serializer): Response
     {
-        $data = $request->getContent();
-        $article = $seralizer->deserialize($data, Article::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($article);
-        $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($article, "json");
-        return new Response($jsonContent);
+        $data=$request-> getContent();
+        $article =$serializer -> deserialize ($data, Article::class, 'json');
+        $em =$this -> getDoctrine()->getmanager();
+        $em -> persist ($article);
+        $em ->flush();
     }
-     /**
-     * @Route("/api/updarticle/{id}", name="aupdarticle")
+    /**
+     * @Route("/api/updatearticle/{id}", name="Article_put", methods={"PUT"})
      */
-    public function updarticle($id, Request $request, SerializerInterface $seralizer, ArticleRepository $repo): Response
+    public function putArticle(
+        Article $article,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $article = $repo->find($id);
-        $data = $request->getContent();
-        $article = $seralizer->deserialize($data, Materiels::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
+        $serializer->deserialize(
+            $request->getContent(),
+            Article::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $article]
+        );
+
         $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($article, "json");
-        return new Response($jsonContent);
-    }    
+
+        return new JsonResponse(
+            $serializer->serialize($article, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
+    }
      /**
      * @Route("/api/deletarticle/{id}", name="deletarticle")
      */

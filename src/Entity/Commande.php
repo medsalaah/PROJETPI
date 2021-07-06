@@ -6,6 +6,7 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
@@ -16,31 +17,37 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("commande:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("commande:read")
      */
     private $prix_total;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups ("commande:read")
      */
     private $date_com;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups ("commande:read")
      */
     private $date_ab;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("commande:read")
      */
     private $etat_paiement;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("commande:read")
      */
     private $mode_paiement;
 

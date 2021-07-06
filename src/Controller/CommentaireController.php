@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Commentaire;
 use App\Repository\CommentaireRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CommentaireController extends AbstractController
@@ -66,17 +70,29 @@ class CommentaireController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/updatecommentaire", name="commentaire_update")
+     * @Route("/api/updatecommentaire/{id}", name="Commentaire_put", methods={"PUT"})
      */
-        public function updateCommentaire ($id, Request $request, SerializerInterface $seralizer, CommentaireRepository $repo): Response
+    public function putCommentaire(
+        Commentaire $commentaire,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $commentaire = $repo->find($id);
-        $data = $request->getContent();
-        $commentaire = $seralizer->deserialize($data, Commentaire::class, 'json');
+        $serializer->deserialize(
+            $request->getContent(),
+            Commentaire::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $commentaire]
+        );
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $jsonContent = $seralizer->serialize($commentaire, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($commentaire, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }
 }

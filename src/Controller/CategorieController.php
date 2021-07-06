@@ -6,10 +6,13 @@ use App\Entity\Categorie;
 use App\Entity\Evenement;
 use App\Repository\CategorieRepository;
 use App\Repository\EvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CategorieController extends AbstractController
@@ -68,17 +71,29 @@ class CategorieController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/updatecategorie", name="categorie_update")
+     * @Route("/api/updatecategorie/{id}", name="Categorie_put", methods={"PUT"})
      */
-    public function updateCategorie($id, Request $request, SerializerInterface $seralizer, CategorieRepository $repo): Response
+    public function putCategorie(
+        Categorie $categorie,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $categorie = $repo->find($id);
-        $data = $request->getContent();
-        $categorie = $seralizer->deserialize($data, Categorie::class, 'json');
+        $serializer->deserialize(
+            $request->getContent(),
+            Categorie::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $categorie]
+        );
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $jsonContent = $seralizer->serialize($categorie, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($categorie, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }
 }

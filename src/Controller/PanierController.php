@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Panier;
 use App\Repository\PanierRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PanierController extends AbstractController
@@ -66,17 +70,29 @@ class PanierController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/updatepanier", name="panier_update")
+     * @Route("/api/updatepanier/{id}", name="Panier_put", methods={"PUT"})
      */
-    public function updatePanier ($id, Request $request, SerializerInterface $seralizer, PanierRepository $repo): Response
+    public function putPanier(
+        Panier $panier,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $panier = $repo->find($id);
-        $data = $request->getContent();
-        $panier = $seralizer->deserialize($data, Panier::class, 'json');
+        $serializer->deserialize(
+            $request->getContent(),
+            Panier::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $panier]
+        );
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $jsonContent = $seralizer->serialize($panier, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($panier, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }
 }

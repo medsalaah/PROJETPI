@@ -61,7 +61,6 @@ class EvenementController extends AbstractController
     public function deleteEvenement ($id, SerializerInterface $seralizer, EvenementRepository $repo): Response
     {
         $evenement = $repo->find($id);
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($evenement);
         $em->flush();
@@ -69,9 +68,9 @@ class EvenementController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/{id}", name="Evenement_put", methods={"PUT"})
+     * @Route("/api/updateevenement/{id}", name="Evenement_put", methods={"PUT"})
      */
-    public function putProduct(
+    public function putEvenement(
         Evenement $evenement,
         Request $request,
         EntityManagerInterface $em,

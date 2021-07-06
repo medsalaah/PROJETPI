@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Materiels;
 use App\Repository\MaterielsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class MateriauxController extends AbstractController
@@ -36,22 +40,32 @@ class MateriauxController extends AbstractController
         $jsonContent = $seralizer->serialize($materiel, "json");
         return new Response($jsonContent);
     }
-     /**
-     * @Route("/api/updmateriel/{id}", name="aupdmateriel")
+    /**
+     * @Route("/api/updatemateriel/{id}", name="Materiel_put", methods={"PUT"})
      */
-    public function updmateriel($id, Request $request, SerializerInterface $seralizer, MaterielsRepository $repo): Response
+    public function putMateriel(
+        Materiels $materiels,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $materiel = $repo->find($id);
-        $data = $request->getContent();
-        $materiel = $seralizer->deserialize($data, Materiels::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($materiel);
+        $serializer->deserialize(
+            $request->getContent(),
+            Materiels::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $materiels]
+        );
+
         $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($materiel, "json");
-        return new Response($jsonContent);
-    }    
+
+        return new JsonResponse(
+            $serializer->serialize($materiels, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
+    }
      /**
      * @Route("/api/deletmateriel/{id}", name="deletmateriel")
      */

@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Abonnement;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ReservationController extends AbstractController
@@ -27,7 +31,7 @@ class ReservationController extends AbstractController
     public function getAllReservations (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Reservation::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json");
+        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'reservation:read']);
         return new Response($jsonContent);
     }
 
@@ -66,17 +70,29 @@ class ReservationController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/updatereservation", name="reservation_update")
+     * @Route("/api/updatereservation/{id}", name="Reservation_put", methods={"PUT"})
      */
-    protected function updateReservation ($id, Request $request, SerializerInterface $seralizer, ReservationRepository $repo): Response
+    public function putReservation(
+        Reservation $reservation,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $reservation = $repo->find($id);
-        $data = $request->getContent();
-        $reservation = $seralizer->deserialize($data, Reservation::class, 'json');
+        $serializer->deserialize(
+            $request->getContent(),
+            Reservation::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $reservation]
+        );
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $jsonContent = $seralizer->serialize($reservation, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($reservation, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
@@ -14,21 +15,25 @@ class Location
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("loation:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("loation:read")
      */
     private $date_recu;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("loation:read")
      */
     private $date_rep;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("loation:read")
      */
     private $prix_loc;
 
