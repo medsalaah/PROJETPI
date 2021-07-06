@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 
+use App\Entity\Abonnement;
 use App\Entity\Expriences;
 use App\Repository\ExpriencesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ExperienceController extends AbstractController
@@ -67,17 +71,29 @@ class ExperienceController extends AbstractController
         return new Response($jsonContent);
     }
     /**
-     * @Route("/api/updateexperience", name="experience_update")
+     * @Route("/api/updateexperience/{id}", name="Experience_put", methods={"PUT"})
      */
-    public function updateExperience($id, Request $request, SerializerInterface $seralizer, ExpriencesRepository $repo): Response
+    public function putExperience(
+        Expriences $experience,
+        Request $request,
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ): Response
     {
-        $experience = $repo->find($id);
-        $data = $request->getContent();
-        $experience = $seralizer->deserialize($data, Expriences::class, 'json');
+        $serializer->deserialize(
+            $request->getContent(),
+            Expriences::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $experience]
+        );
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $jsonContent = $seralizer->serialize($experience, "json");
-        return new Response($jsonContent);
+
+        return new JsonResponse(
+            $serializer->serialize($experience, "json", ['groups' => 'get']),
+            JsonResponse::HTTP_NO_CONTENT,
+            [],
+            true
+        );
     }
 }
