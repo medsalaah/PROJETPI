@@ -83,9 +83,10 @@ class Materiels
 
     public function setPrixMat(float $Prix_Mat): self
     {
-        $this->prixMat = $Prix_Mat;
+       $this->Prix_Mat = $Prix_Mat;
 
         return $this;
+        
     }
     public function getImageMat(): ?string
     {

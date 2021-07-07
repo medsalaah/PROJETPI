@@ -6,7 +6,7 @@ use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ArticleController extends AbstractController
 {
+ 
     /**
      * @Route("/article", name="article")
      */
@@ -25,25 +26,21 @@ class ArticleController extends AbstractController
             'controller_name' => 'ArticleController',
         ]);
     }
-     /**
-     * @Route("/api/addarticle", name="addarticle")
+    /**
+     * @Route("/api/addarticle", name="article_add")
      */
-    public function addarticle(Request $request ,SerializerInterface $seralizer): Response
+    public function addArticle (Request $request, SerializerInterface $serializer): Response
     {
-        $data = $request->getContent();
-        $article = $seralizer->deserialize($data, Article::class, 'json');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($article);
-        $em->flush();
-        # pour afficher les erreurs
-        $jsonContent = $seralizer->serialize($article, "json");
-        return new Response($jsonContent);
+        $data=$request-> getContent();
+        $article =$serializer -> deserialize ($data, Article::class, 'json');
+        $em =$this -> getDoctrine()->getmanager();
+        $em -> persist ($article);
+        $em ->flush();
     }
-      /**
-     * @Route("/api/updarticle/{id}", name="updarticle_put", methods={"PUT"})
+    /**
+     * @Route("/api/updatearticle/{id}", name="Article_put", methods={"PUT"})
      */
-    public function updarticle(
+    public function putArticle(
         Article $article,
         Request $request,
         EntityManagerInterface $em,
@@ -65,7 +62,7 @@ class ArticleController extends AbstractController
             [],
             true
         );
-    }    
+    }
      /**
      * @Route("/api/deletarticle/{id}", name="deletarticle")
      */

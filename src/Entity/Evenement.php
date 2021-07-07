@@ -91,12 +91,12 @@ class Evenement
         return $this;
     }
 
-    public function getDateDebEven(): ?string
+    public function getDateDebEven(): ?\DateTimeInterface
     {
         return $this->date_deb_even;
     }
 
-    public function setDateDebEven(string $date_deb_even): self
+    public function setDateDebEven(\DateTimeInterface $date_deb_even): self
     {
         $this->date_deb_even = $date_deb_even;
 
