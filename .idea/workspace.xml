@@ -2,34 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f6b98c5-8a62-4156-80ea-a07cedfef0fd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migrations/Version20210708193551.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AbonnementController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AbonnementController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ArticleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArticleController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/CategorieController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CategorieController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623164734.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623171459.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623173024.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623181825.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623215627.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623222227.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210623223330.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210624010802.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701165545.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701165948.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701170323.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701195843.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701200130.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701200214.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701224531.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701225016.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210701225325.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/CommandeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommandeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/CommentaireController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommentaireController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExperienceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExperienceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/LocationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LocationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MateriauxController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MateriauxController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/OrganisateurController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/OrganisateurController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/PanierController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PanierController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RatingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RatingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ReservationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReservationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UtilisateurController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UtilisateurController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Abonnement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Abonnement.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Article.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Article.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Categorie.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Categorie.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Commande.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Commande.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Commentaire.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Commentaire.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Evenement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Evenement.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Expriences.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Expriences.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Location.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Location.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Materiels.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Materiels.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Organisateur.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Organisateur.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Panier.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Panier.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Rating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Reservation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Reservation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Utilisateur.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Utilisateur.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -210,6 +210,8 @@
       <workItem from="1625588309513" duration="6810000" />
       <workItem from="1625598734994" duration="2858000" />
       <workItem from="1625755305294" duration="1481000" />
+      <workItem from="1625763930486" duration="1913000" />
+      <workItem from="1625772025198" duration="3191000" />
     </task>
     <servers />
   </component>

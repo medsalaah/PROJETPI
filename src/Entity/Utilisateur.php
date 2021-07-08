@@ -27,7 +27,7 @@ class Utilisateur
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
      * @Assert\NotBlank
-     * @Assert\Length(
+     * @Assert\Range (
      *      min =1,
      *      max =15,
      *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter")
@@ -38,7 +38,7 @@ class Utilisateur
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
      * @Assert\NotBlank
-     * @Assert\Length(
+     * @Assert\Range (
      *      min =1,
      *      max =15,
      *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter")

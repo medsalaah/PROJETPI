@@ -30,7 +30,7 @@ class CommandeController extends AbstractController
     public function getAllCommandes (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Commande::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json");
+        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'commande:read']);
         return new Response($jsonContent);
     }
 

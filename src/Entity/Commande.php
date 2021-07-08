@@ -6,6 +6,7 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,6 +16,7 @@ class Commande
 {
     /**
      * @ORM\Id
+     * @Groups ("commande:read")
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
@@ -22,12 +24,14 @@ class Commande
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("commande:read")
      * @Assert\NotBlank
      */
     private $prix_total;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups ("commande:read")
      * @Assert\NotBlank
      * @Assert\Date
      * @var string A "Y-m-d" formatted value
@@ -36,6 +40,7 @@ class Commande
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups ("commande:read")
      * @Assert\NotBlank
      * @Assert\DateTime
      * @var string A "Y-m-d H:i:s" formatted value
@@ -44,12 +49,14 @@ class Commande
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("commande:read")
      * @Assert\NotBlank
      */
     private $etat_paiement;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ("commande:read")
      * @Assert\NotBlank
      */
     private $mode_paiement;

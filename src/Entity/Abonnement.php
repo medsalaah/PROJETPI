@@ -24,7 +24,7 @@ class Abonnement
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\NotBlank
-     * @Assert\Length(
+     * @Assert\Range(
      *      min = 2,
      *      max = 10)
      */

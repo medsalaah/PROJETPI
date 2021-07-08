@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
@@ -15,6 +16,7 @@ class Location
 {
     /**
      * @ORM\Id
+     * @Groups ("location:read")
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
@@ -22,6 +24,7 @@ class Location
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("location:read")
      * @Assert\Date
      * @var string A "Y-m-d" formatted value
      * @Assert\NotBlank
@@ -30,6 +33,7 @@ class Location
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("location:read")
      * @Assert\Date
      * @var string A "Y-m-d" formatted value
      * @Assert\NotBlank
@@ -38,6 +42,7 @@ class Location
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("location:read")
      * @Assert\NotBlank
      */
     private $prix_loc;

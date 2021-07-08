@@ -31,7 +31,7 @@ class ExperienceController extends AbstractController
     public function getAllExperiences (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Expriences::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json");
+        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'experience:read']);
         return new Response($jsonContent);
     }
 
