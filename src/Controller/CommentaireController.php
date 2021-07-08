@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Commentaire;
 use App\Repository\CommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +35,7 @@ class CommentaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/commentaire/{id}", name="Commentaire_detail")
+     * @Route("/api/listcommentaire/{id}", name="listcommentaire_detail")
      */
     public function getCommentaire ($id, SerializerInterface $seralizer, CommentaireRepository $repo): Response
     {
@@ -69,10 +68,10 @@ class CommentaireController extends AbstractController
         $jsonContent = $seralizer->serialize($commentaire, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatecommentaire/{id}", name="Commentaire_put", methods={"PUT"})
+      /**
+     * @Route("/api/updcommentaire/{id}", name="aupdcommentaire_put", methods={"PUT"})
      */
-    public function putCommentaire(
+    public function putcommentaire(
         Commentaire $commentaire,
         Request $request,
         EntityManagerInterface $em,

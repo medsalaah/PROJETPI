@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class AbonnementController extends AbstractController
-{
+{ //version4
     /**
      * @Route("/abonnement", name="abonnement")
      */
@@ -68,10 +68,10 @@ class AbonnementController extends AbstractController
         $jsonContent = $seralizer->serialize($abonnement, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updateabonnement/{id}", name="Abonnement_put", methods={"PUT"})
+      /**
+     * @Route("/api/updateabonnement/{id}", name="updateabonnement_put", methods={"PUT"})
      */
-    public function putAbonnement(
+    public function putabonnement(
         Abonnement $abonnement,
         Request $request,
         EntityManagerInterface $em,

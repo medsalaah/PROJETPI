@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Abonnement;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +30,7 @@ class ReservationController extends AbstractController
     public function getAllReservations (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Reservation::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'reservation:read']);
+        $jsonContent=$seralizer -> serialize($list,"json");
         return new Response($jsonContent);
     }
 
@@ -69,10 +68,10 @@ class ReservationController extends AbstractController
         $jsonContent = $seralizer->serialize($reservation, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatereservation/{id}", name="Reservation_put", methods={"PUT"})
+      /**
+     * @Route("/api/updreservation/{id}", name="aupdreservation_put", methods={"PUT"})
      */
-    public function putReservation(
+    public function putreservation(
         Reservation $reservation,
         Request $request,
         EntityManagerInterface $em,
@@ -94,5 +93,5 @@ class ReservationController extends AbstractController
             [],
             true
         );
-    }
+    } 
 }

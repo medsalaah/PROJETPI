@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
@@ -15,13 +15,11 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ("reservation:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups ("reservation:read")
      */
     private $date_res;
 

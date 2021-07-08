@@ -6,6 +6,7 @@ use App\Repository\AbonnementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AbonnementRepository::class)
@@ -21,21 +22,31 @@ class Abonnement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 10)
      */
     private $libelle_ab;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
      */
     private $prix_ab;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
      */
     private $date_ab;
 
     /**
      * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="abonnement")
+     * @Assert\NotBlanK
      */
     private $nom;
 

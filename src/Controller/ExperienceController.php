@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 
-use App\Entity\Abonnement;
 use App\Entity\Expriences;
 use App\Repository\ExpriencesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +31,7 @@ class ExperienceController extends AbstractController
     public function getAllExperiences (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Expriences::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'experience:read']);
+        $jsonContent=$seralizer -> serialize($list,"json");
         return new Response($jsonContent);
     }
 
@@ -70,10 +69,10 @@ class ExperienceController extends AbstractController
         $jsonContent = $seralizer->serialize($experience, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updateexperience/{id}", name="Experience_put", methods={"PUT"})
+      /**
+     * @Route("/api/updexperience/{id}", name="aupdexperience_put", methods={"PUT"})
      */
-    public function putExperience(
+    public function putexperience(
         Expriences $experience,
         Request $request,
         EntityManagerInterface $em,

@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-
-
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ArticleController extends AbstractController
 {
+ 
     /**
      * @Route("/article", name="article")
      */

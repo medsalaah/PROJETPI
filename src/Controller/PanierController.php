@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Panier;
 use App\Repository\PanierRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,10 +68,10 @@ class PanierController extends AbstractController
         $jsonContent = $seralizer->serialize($panier, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatepanier/{id}", name="Panier_put", methods={"PUT"})
+      /**
+     * @Route("/api/updpanier/{id}", name="aupdpanier_put", methods={"PUT"})
      */
-    public function putPanier(
+    public function putpanier(
         Panier $panier,
         Request $request,
         EntityManagerInterface $em,
@@ -94,5 +93,5 @@ class PanierController extends AbstractController
             [],
             true
         );
-    }
+    } 
 }

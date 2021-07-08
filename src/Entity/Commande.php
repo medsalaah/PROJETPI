@@ -6,7 +6,7 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
@@ -17,53 +17,56 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ("commande:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups ("commande:read")
+     * @Assert\NotBlank
      */
     private $prix_total;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups ("commande:read")
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
      */
     private $date_com;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups ("commande:read")
+     * @Assert\NotBlank
+     * @Assert\DateTime
+     * @var string A "Y-m-d H:i:s" formatted value
      */
     private $date_ab;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ("commande:read")
+     * @Assert\NotBlank
      */
     private $etat_paiement;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ("commande:read")
+     * @Assert\NotBlank
      */
     private $mode_paiement;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Materiels::class, inversedBy="commandes")
-     */
-    private $titre_Mat;
-
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="date")
      */
     private $utilisateur;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Lignecommande::class, mappedBy="commande")
+     */
+    private $id_commande;
+
     public function __construct()
     {
         $this->titre_Mat = new ArrayCollection();
+        $this->id_commande = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,30 +134,6 @@ class Commande
         return $this;
     }
 
-    /**
-     * @return Collection|Materiels[]
-     */
-    public function getTitreMat(): Collection
-    {
-        return $this->titre_Mat;
-    }
-
-    public function addTitreMat(Materiels $titreMat): self
-    {
-        if (!$this->titre_Mat->contains($titreMat)) {
-            $this->titre_Mat[] = $titreMat;
-        }
-
-        return $this;
-    }
-
-    public function removeTitreMat(Materiels $titreMat): self
-    {
-        $this->titre_Mat->removeElement($titreMat);
-
-        return $this;
-    }
-
     public function getUtilisateur(): ?Utilisateur
     {
         return $this->utilisateur;
@@ -166,4 +145,35 @@ class Commande
 
         return $this;
     }
+
+    /**
+     * @return Collection|Lignecommande[]
+     */
+    public function getIdCommande(): Collection
+    {
+        return $this->id_commande;
+    }
+
+    public function addIdCommande(Lignecommande $idCommande): self
+    {
+        if (!$this->id_commande->contains($idCommande)) {
+            $this->id_commande[] = $idCommande;
+            $idCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdCommande(Lignecommande $idCommande): self
+    {
+        if ($this->id_commande->removeElement($idCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($idCommande->getCommande() === $this) {
+                $idCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

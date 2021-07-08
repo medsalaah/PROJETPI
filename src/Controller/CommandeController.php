@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Abonnement;
 use App\Entity\Commande;
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,12 +30,12 @@ class CommandeController extends AbstractController
     public function getAllCommandes (SerializerInterface $seralizer): Response
     {
         $list=$this-> getDoctrine()->getRepository(Commande::class) -> findAll();
-        $jsonContent=$seralizer -> serialize($list,"json", ['groups'=>'commande:read']);
+        $jsonContent=$seralizer -> serialize($list,"json");
         return new Response($jsonContent);
     }
 
     /**
-     * @Route("/api/commande/{id}", name="commande_detail")
+     * @Route("/api/listcommande/{id}", name="listcommande_detail")
      */
     public function getCommande ($id, SerializerInterface $seralizer, CommandeRepository $repo): Response
     {
@@ -46,7 +45,7 @@ class CommandeController extends AbstractController
     }
 
     /**
-     * @Route("/api/addcommande", name="commande_add")
+     * @Route("/api/addcommande", name="commande_add")s
      */
     public function addCommande (Request $request, SerializerInterface $serializer): Response
     {
@@ -69,10 +68,10 @@ class CommandeController extends AbstractController
         $jsonContent = $seralizer->serialize($commande, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatecommande/{id}", name="Commande_put", methods={"PUT"})
+      /**
+     * @Route("/api/updatecommande/{id}", name="updatecommande_put", methods={"PUT"})
      */
-    public function putCommande(
+    public function putcommande(
         Commande $commande,
         Request $request,
         EntityManagerInterface $em,

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EvenementRepository::class)
@@ -19,26 +20,35 @@ class Evenement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $description;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
+     * @Assert\NotBlank
      */
     private $date_deb_even;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
+     * @Assert\NotBlank
      */
     private $date_fin_even;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
      */
     private $prix_even;
 
@@ -49,6 +59,7 @@ class Evenement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $image_eve;
 
@@ -59,6 +70,7 @@ class Evenement
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $nbr_participant;
 

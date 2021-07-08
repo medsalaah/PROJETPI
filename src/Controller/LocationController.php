@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Location;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,10 +40,10 @@ class LocationController extends AbstractController
         $jsonContent = $serializer->serialize($location, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatelocation/{id}", name="Location_put", methods={"PUT"})
+      /**
+     * @Route("/api/updlocation/{id}", name="aupdlocation_put", methods={"PUT"})
      */
-    public function putLocation(
+    public function putlocation(
         Location $location,
         Request $request,
         EntityManagerInterface $em,
@@ -66,7 +65,7 @@ class LocationController extends AbstractController
             [],
             true
         );
-    }
+    }    
      /**
      * @Route("/api/deletlocation/{id}", name="deletlocation")
      */
@@ -88,7 +87,7 @@ class LocationController extends AbstractController
     public function getlocations(SerializerInterface $seralizer): Response
     {
         $list = $this->getDoctrine()->getRepository(Location::class)->findAll();
-        $jsonContent = $seralizer->serialize($list, "json", ['groups'=>'location:read']);
+        $jsonContent = $seralizer->serialize($list, "json");
         return new Response($jsonContent);
     }
      /**

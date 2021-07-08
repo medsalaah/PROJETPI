@@ -70,8 +70,8 @@ class CategorieController extends AbstractController
         $jsonContent = $seralizer->serialize($categorie, "json");
         return new Response($jsonContent);
     }
-    /**
-     * @Route("/api/updatecategorie/{id}", name="Categorie_put", methods={"PUT"})
+      /**
+     * @Route("/api/updatecategorie/{id}", name="updatecategorie_put", methods={"PUT"})
      */
     public function putCategorie(
         Categorie $categorie,

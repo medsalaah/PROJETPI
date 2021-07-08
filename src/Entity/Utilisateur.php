@@ -7,13 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
 class Utilisateur
 {
-    /**
+ /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,26 +26,43 @@ class Utilisateur
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min =1,
+     *      max =15,
+     *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min =1,
+     *      max =15,
+     *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ("user:read")
+     * @SecurityAssert\UserPassword(
+     *     message = "Wrong value for your current password"
+     * )
      */
     private $password;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="utilisateur")

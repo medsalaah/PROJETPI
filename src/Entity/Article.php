@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -22,18 +23,29 @@ class Article
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ("article:read")
+     *@Assert\Length(
+     *      min =1,
+     *      max =15,
+     *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter"
+     * )
      */
     private $titre_art;
 
     /**
      * @ORM\Column(type="date")
      * @Groups ("article:read")
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
      */
     private $date_pub_art;
 
     /**
      * @ORM\Column(type="date")
      * @Groups ("article:read")
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @var string A "Y-m-d" formatted value
      */
     private $date_update;
 

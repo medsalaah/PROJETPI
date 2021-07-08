@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ExpriencesRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ExpriencesRepository::class)
@@ -15,19 +15,18 @@ class Expriences
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups  ("experience:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups  ("experience:read")
+     * @Assert\NotBlank
      */
     private $descrition;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups  ("experience:read")
+     * @Assert\NotBlank
      */
     private $image;
 

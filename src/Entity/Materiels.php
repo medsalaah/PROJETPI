@@ -6,6 +6,7 @@ use App\Repository\MaterielsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection; 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MaterielsRepository::class)
@@ -21,21 +22,29 @@ class Materiels
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     *@Assert\Length(
+     *      min =1,
+     *      max =15,
+     *      notInRangeMessage = "The name must be between{{min}}caracter and {{ max }}caracter")
      */
     private $Titre_Mat;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
      */
     private $Prix_Mat;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $Image_Mat;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $Descr_mat;
 
@@ -45,13 +54,19 @@ class Materiels
     private $Stock_Mat;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Commande::class, mappedBy="titre_Mat")
+     * @ORM\OneToMany(targetEntity=Lignecommande::class, mappedBy="materiels")
      */
-    private $commandes;
+    private $id_Mat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Lignelocation::class, mappedBy="materiels")
+     */
+    private $relation;
 
     public function __construct()
     {
-        $this->commandes = new ArrayCollection();
+        $this->id_Mat = new ArrayCollection();
+        $this->relation = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,9 +92,10 @@ class Materiels
 
     public function setPrixMat(float $Prix_Mat): self
     {
-        $this->prixMat = $Prix_Mat;
+       $this->Prix_Mat = $Prix_Mat;
 
         return $this;
+        
     }
     public function getImageMat(): ?string
     {
@@ -118,27 +134,60 @@ class Materiels
     }
 
     /**
-     * @return Collection|Commande[]
+     * @return Collection|Lignecommande[]
      */
-    public function getCommandes(): Collection
+    public function getIdMat(): Collection
     {
-        return $this->commandes;
+        return $this->id_Mat;
     }
 
-    public function addCommande(Commande $commande): self
+    public function addIdMat(Lignecommande $idMat): self
     {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes[] = $commande;
-            $commande->addTitreMat($this);
+        if (!$this->id_Mat->contains($idMat)) {
+            $this->id_Mat[] = $idMat;
+            $idMat->setMateriels($this);
         }
 
         return $this;
     }
 
-    public function removeCommande(Commande $commande): self
+    public function removeIdMat(Lignecommande $idMat): self
     {
-        if ($this->commandes->removeElement($commande)) {
-            $commande->removeTitreMat($this);
+        if ($this->id_Mat->removeElement($idMat)) {
+            // set the owning side to null (unless already changed)
+            if ($idMat->getMateriels() === $this) {
+                $idMat->setMateriels(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Lignelocation[]
+     */
+    public function getRelation(): Collection
+    {
+        return $this->relation;
+    }
+
+    public function addRelation(Lignelocation $relation): self
+    {
+        if (!$this->relation->contains($relation)) {
+            $this->relation[] = $relation;
+            $relation->setMateriels($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelation(Lignelocation $relation): self
+    {
+        if ($this->relation->removeElement($relation)) {
+            // set the owning side to null (unless already changed)
+            if ($relation->getMateriels() === $this) {
+                $relation->setMateriels(null);
+            }
         }
 
         return $this;
